@@ -62,8 +62,8 @@ ingredients_data: # Define ingredient data
 Test 1 
 1. Whisk <span id="inst-egg-qty" data-ingredient-id="egg">1</span> egg,
    <span id="inst-vanilla-qty" data-ingredient-id="vanilla">1</span> tsp vanilla and
-   <span id="inst-cinnamon-qty" data-ingredient-id="cinnamon">1/2</span> tsp cinnamon in shallow dish.
-   Stir in <span id="inst-milk-qty" data-ingredient-id="milk">1/4</span> c milk.
+   <span id="inst-cinnamon-qty" data-ingredient-id="cinnamon">0.5</span> tsp cinnamon in shallow dish.
+   Stir in <span id="inst-milk-qty" data-ingredient-id="milk">0.25</span> c milk.
 
 2. Dip <span class="inst-quantity" data-ingredient-id="bread">4</span> slices brioche bread in egg mixture, turning to coat evenly on both sides.
 
