@@ -65,10 +65,7 @@ Test 1
    <span id="inst-cinnamon-qty" data-ingredient-id="cinnamon">1/2</span> tsp cinnamon in shallow dish.
    Stir in <span id="inst-milk-qty" data-ingredient-id="milk">1/4</span> c milk.
 
-2. Dip {% assign bread_data = page.ingredients_data | where:"id","bread" | first %}
-   {% if bread_data %}{{ bread_data.quantity }}{% endif %}
-   {% if bread_data.unit %} {{ bread_data.unit }} {% endif %}
-   {{ bread_data.item | downcase }} in egg mixture, turning to coat evenly on both sides.
+2. Dip <span class="inst-quantity" data-ingredient-id="bread">4</span> slices brioche bread in egg mixture, turning to coat evenly on both sides.
 
 3. Cook bread slices on lightly greased nonstick griddle or skillet on medium heat until cooked through and browned on both sides. Serve with Easy Spiced Syrup (recipe follows), if desired. Voila, easy French toast.
 
