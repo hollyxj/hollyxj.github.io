@@ -32,12 +32,6 @@ ingredients_data: # Define ingredient data
   Source: <a href="https://www.mccormick.com/recipes/breakfast-brunch/quick-and-easy-french-toast" target="_blank" rel="noopener noreferrer">McCormick®</a>
 </p>
 
-<div class="servings-spinner-container">
-    <label for="servings-input">Servings:</label>
-    <button id="decrease-servings">-</button>
-    <input type="number" id="servings-input" value="4" min="1" max="99">
-    <button id="increase-servings">+</button>
-</div>
 
 ## Ingredients
 
