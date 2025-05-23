@@ -1,4 +1,31 @@
 ---
 ---
 
-@import 'jekyll-theme-cayman';
+// @import 'jekyll-theme-cayman';
+@import "{{ site.theme }}"; // Import the base theme styles first
+
+
+/* Menu Styling */
+header nav ul {
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 20px 0; /* Add some space around the menu */
+    display: flex; /* Make list items go horizontal */
+    justify-content: center; /* Center the menu items */
+    gap: 20px; /* Space between menu items */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+header nav ul li a {
+    display: block; /* Make the whole link clickable */
+    padding: 8px 15px;
+    text-decoration: none; /* Remove underline */
+    color: #333; /* Dark gray text */
+    background-color: #eee; /* Light gray background */
+    border-radius: 5px; /* Slightly rounded corners */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+header nav ul li a:hover {
+    background-color: #ddd; /* Darker gray on hover */
+}
