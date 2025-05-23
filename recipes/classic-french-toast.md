@@ -15,13 +15,13 @@ ingredients_data: # Define ingredient data
     unit: teaspoon
     item: vanilla extract
   - id: cinnamon
-    quantity: 0.5
+    quantity: 0.5 # Ensure these are decimals!
     unit: teaspoon
     item: ground cinnamon
   - id: milk
-    quantity: 0.25
+    quantity: 0.25 # Ensure these are decimals!
     unit: cup
-    item: milk
+    item: Milk
   - id: bread
     quantity: 4
     unit: slices
@@ -59,11 +59,11 @@ ingredients_data: # Define ingredient data
 </ul>
 
 ## Instructions
-Test 1 
-1. Whisk <span id="inst-egg-qty" data-ingredient-id="egg">1</span> egg,
-   <span id="inst-vanilla-qty" data-ingredient-id="vanilla">1</span> tsp vanilla and
-   <span id="inst-cinnamon-qty" data-ingredient-id="cinnamon">0.5</span> tsp cinnamon in shallow dish.
-   Stir in <span id="inst-milk-qty" data-ingredient-id="milk">0.25</span> c milk.
+Test 2
+1. Whisk <span class="inst-quantity" data-ingredient-id="egg">1</span> egg,
+   <span class="inst-quantity" data-ingredient-id="vanilla">1</span> tsp vanilla and
+   <span class="inst-quantity" data-ingredient-id="cinnamon">0.5</span> tsp cinnamon in shallow dish.
+   Stir in <span class="inst-quantity" data-ingredient-id="milk">0.25</span> c milk.
 
 2. Dip <span class="inst-quantity" data-ingredient-id="bread">4</span> slices brioche bread in egg mixture, turning to coat evenly on both sides.
 
