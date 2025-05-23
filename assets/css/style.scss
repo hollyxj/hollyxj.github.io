@@ -29,3 +29,8 @@ header nav ul li a {
 header nav ul li a:hover {
     background-color: #ddd; /* Darker gray on hover */
 }
+
+/* To override the default link color of the theme since it is interfering */
+#main_content a {
+    color: #0366d6; /* Default blue for links in content, adjust as needed */
+}
