@@ -350,17 +350,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Default button clicked, servings reset to:', currentServings);
             });
         }
-        }
-        
         // Initialize quantities on page load
         updateQuantities();
-    } else {
-        // *** DEBUGGING: Log if critical spinner elements are not found ***
-        console.log('Spinner or ingredient list elements not found on this page. Spinner logic will not execute.');
-        console.log('servingsInput:', servingsInput);
-        console.log('decreaseButton:', decreaseButton);
-        console.log('increaseButton:', increaseButton);
-        console.log('ingredientListElement:', ingredientListElement);
-        // *** END DEBUGGING ***
-    }
+        } else {
+            // *** DEBUGGING: Log if critical spinner elements are not found ***
+            console.log('Spinner or ingredient list elements not found on this page. Spinner logic will not execute.');
+            console.log('servingsInput:', servingsInput);
+            console.log('decreaseButton:', decreaseButton);
+            console.log('increaseButton:', increaseButton);
+            console.log('ingredientListElement:', ingredientListElement);
+            // *** END DEBUGGING ***
+        }
 });
