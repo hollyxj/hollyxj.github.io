@@ -31,8 +31,6 @@ ingredients_data:
     item: oleo (margarine), melted
 ---
 
-# Creamy Baked Chicken Breast
-
 A delightfully simple and comforting chicken dish from Grandma, baked until tender in a creamy sauce with a savory stuffing topping.
 
 ## Ingredients
