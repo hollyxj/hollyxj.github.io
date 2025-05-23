@@ -21,7 +21,7 @@ ingredients_data: # Define ingredient data
   - id: milk
     quantity: 0.25
     unit: cup
-    item: Milk
+    item: milk
   - id: bread
     quantity: 4
     unit: slices
