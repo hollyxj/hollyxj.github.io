@@ -5,7 +5,7 @@ categories:
   - breakfast
   - brunch
 original_servings: 4
-ingredients_data: # Define your ingredient data here
+ingredients_data: # Define ingredient data
   - id: egg # Unique identifier for referencing
     quantity: 1
     unit: "" # No unit needed for egg
@@ -13,15 +13,15 @@ ingredients_data: # Define your ingredient data here
   - id: vanilla
     quantity: 1
     unit: teaspoon
-    item: Vanilla Extract
+    item: vanilla extract
   - id: cinnamon
-    quantity: 1/2
+    quantity: 0.5
     unit: teaspoon
-    item: Ground Cinnamon
+    item: ground cinnamon
   - id: milk
-    quantity: 1/4
+    quantity: 0.25
     unit: cup
-    item: milk
+    item: Milk
   - id: bread
     quantity: 4
     unit: slices
