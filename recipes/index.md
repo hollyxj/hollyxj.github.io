@@ -11,5 +11,7 @@ A place for me to keep some recipes! Click on a recipe below to view the full de
 
 * [Classic French Toast](/recipes/classic-french-toast.md/)
 
+* <a href="{{ "/recipes/classic-french-toast/" | relative_url }}">Classic French Toast</a>
+
 
 *Adding more of my favorite recipes soon!*
