@@ -51,7 +51,7 @@
                 <a href="#" id="reset-servings" class="reset-link">Default</a>
             </div>
             {% endif %}
-            {{ content }} 
+            
              {% if page.ingredients_data %} {# Check if ingredients_data exists #}
             <h2>Ingredients</h2>
             <ul class="ingredient-list">
@@ -68,6 +68,7 @@
               </li>
               {% endfor %}
             </ul>
+        {{ content }} 
       </div>
 
       <footer class="site-footer">
