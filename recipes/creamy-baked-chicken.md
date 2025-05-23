@@ -37,8 +37,6 @@ A delightfully simple and comforting chicken dish from Grandma, baked until tend
 
 ## Ingredients
 
-## Ingredients
-
 <ul class="ingredient-list">
   {% for ingredient in page.ingredients_data %}
   <li data-ingredient-id="{{ ingredient.id }}" data-original-quantity="{{ ingredient.quantity }}">
