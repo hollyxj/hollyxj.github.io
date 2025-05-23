@@ -28,8 +28,6 @@ ingredients_data: # Define ingredient data
     item: brioche bread
 ---
 
-# Classic French Toast
-
 <p>
   Source: <a href="https://www.mccormick.com/recipes/breakfast-brunch/quick-and-easy-french-toast" target="_blank" rel="noopener noreferrer">McCormick®</a>
 </p>
