@@ -69,4 +69,4 @@ ingredients_data: # Define ingredient data
 
 3. Cook bread slices on lightly greased nonstick griddle or skillet on medium heat until cooked through and browned on both sides. Serve with Easy Spiced Syrup (recipe follows), if desired. Voila, easy French toast.
 
-[Back to Recipes Index](/recipes/)
+[Back to All Recipes](/recipes/)
