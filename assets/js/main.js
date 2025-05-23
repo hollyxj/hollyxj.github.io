@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const ingredientItems = Array.from(ingredientListElement.querySelectorAll('li[data-original-quantity]'));
 
         // Define conversion rates (all in terms of teaspoons as base)
-        // Group by type for better control (liquid, dry, count)
         const conversions = {
             'liquid': {
                 'teaspoon': 1,
@@ -62,16 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 'gallon': 768, // 4 quarts = 1 gallon, so 768 tsp = 1 gallon
                 'gal': 768
             },
-            // Add dry weights if needed later:
-            // 'weight': {
-            //     'gram': 1, // base unit
-            //     'ounce': 28.3495,
-            //     'pound': 453.592
-            // },
-            // 'count': { // These are non-convertible by ratio, handled differently
-            //     'egg': 1,
-            //     'clove': 1
-            // }
         };
 
         // Define preferred units for display (maps lowercase unit to preferred display string)
@@ -90,11 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
             'qt': 'quart',
             'gallon': 'gallon',
             'gal': 'gallon',
-            'slices': 'slices', // Non-convertible by standard volume/weight
-            'slice': 'slices',
-            'egg': 'egg',     // Non-convertible
+            'slices': 'slices',
+            'slice': 'slice',
+            'egg': 'egg',
             'eggs': 'eggs',
-            '': ''           // For cases with no unit
+            '': ''
         };
 
         // Function to determine if a unit is convertible by liquid volume
@@ -102,11 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return conversions.liquid.hasOwnProperty(unit);
         }
 
-        // Function to update quantities for both ingredient list and instructions
+        // Function to update quantities for both ingredient list and instructions (unchanged)
         function updateQuantities() {
             const scalingFactor = currentServings / originalServings;
 
-            // Update ingredient list quantities
             ingredientItems.forEach(li => {
                 const originalQuantity = parseFloat(li.dataset.originalQuantity);
                 const originalUnit = li.dataset.originalUnit ? li.dataset.originalUnit.toLowerCase() : '';
@@ -120,13 +108,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (isLiquidVolumeUnit(originalUnit)) {
                         formatted = formatQuantityWithConversion(newQuantity, originalUnit);
                     } else {
-                        // For non-liquid units (like 'egg', 'slices'), just format the number
-                        // and keep the original unit. Round to nearest whole for count units.
                         formatted = {
-                            quantity: formatToFraction(Math.round(newQuantity)), // Round to nearest whole number for count units
-                            unit: preferredUnits[originalUnit] || originalUnit // Use preferred, or original if not found
+                            quantity: formatToFraction(Math.round(newQuantity), true), // Round to nearest whole number for count units
+                            unit: preferredUnits[originalUnit] || originalUnit
                         };
-                        // Special handling for plural/singular of count units if needed (e.g., 1 egg, 2 eggs)
                         if (originalUnit === 'egg' && Math.round(newQuantity) !== 1) {
                              formatted.unit = 'eggs';
                         } else if (originalUnit === 'slices' && Math.round(newQuantity) === 1) {
@@ -141,7 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
-            // Update instruction quantities
             instructionQuantitySpans.forEach(span => {
                 const ingredientId = span.dataset.ingredientId;
                 const originalUnit = span.dataset.originalUnit ? span.dataset.originalUnit.toLowerCase() : '';
@@ -156,11 +140,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (isLiquidVolumeUnit(originalUnit)) {
                             formatted = formatQuantityWithConversion(newQuantity, originalUnit);
                         } else {
-                            // For instructions, we mostly just update the number.
-                            // Unit changes in instructions are complex, stick to original unit text for now.
                             formatted = {
-                                quantity: formatToFraction(Math.round(newQuantity)), // Round to nearest whole for count units
-                                unit: originalUnit // Keep original unit text from instruction HTML
+                                quantity: formatToFraction(Math.round(newQuantity), true),
+                                unit: originalUnit
                             };
                         }
                         span.textContent = formatted.quantity;
@@ -174,100 +156,175 @@ document.addEventListener('DOMContentLoaded', function() {
             if (num === 0) return { quantity: '0', unit: preferredUnits[unit] || unit };
 
             let workingUnit = unit;
-            let workingValue = num;
+            let workingValue = num; // Current value in original unit
 
             // Only proceed with conversion if the unit is a known liquid volume unit
-            if (isLiquidVolumeUnit(unit)) {
-                // Convert to base unit (teaspoons)
-                workingValue = num * conversions.liquid[unit]; // Convert quantity to teaspoons
-                workingUnit = 'teaspoon'; // Set working unit to base for iteration
-            } else {
-                // If it's not a liquid volume unit, return as is (just formatted)
-                return { quantity: formatToFraction(num), unit: preferredUnits[unit] || unit };
+            if (!isLiquidVolumeUnit(unit)) {
+                // If it's not a liquid volume unit, just format the number and return the original unit
+                return { quantity: formatToFraction(num, true), unit: preferredUnits[unit] || unit };
             }
 
-            // Attempt to convert to a larger, "nicer" unit if it results in a whole number or common fraction
-            // Iterate through liquid units in reverse (largest to smallest) for best conversion
+            // --- Conversion Strategy ---
+            // 1. Try to convert to the largest unit that results in a "nice" whole number or common fraction.
+            // 2. If no ideal larger unit, try to convert to a smaller unit (e.g., cups to tablespoons if it makes sense).
+            // 3. Fallback to formatting in the original unit with simplified fractions.
+
+            // Define "nice" denominators for fractions (prioritize smaller denominators)
+            const niceDenominators = [2, 3, 4, 8, 16]; // Common cooking fractions
+            const tolerance = 0.00001; // For float comparisons
+
+            let bestResult = {
+                quantity: formatToFraction(num, false), // Default to original unit, exact fraction
+                unit: preferredUnits[unit] || unit,
+                simplicityScore: calculateFractionSimplicity(num, unit, conversions.liquid[unit], niceDenominators) // Lower is better
+            };
+
+            // Iterate through all possible liquid units (largest to smallest)
             const liquidUnitsSorted = Object.keys(conversions.liquid).sort((a, b) => conversions.liquid[b] - conversions.liquid[a]);
 
             for (const targetUnit of liquidUnitsSorted) {
-                // Skip units that are not larger than the current base (teaspoon)
-                // and skip the base unit itself as a conversion target unless it's the only option
-                if (conversions.liquid[targetUnit] < conversions.liquid[workingUnit]) continue; // Only convert UP
-                if (targetUnit === 'teaspoon' && workingValue < conversions.liquid.tablespoon) continue; // Don't convert tsp to tsp unless there's no other choice
+                const targetUnitBaseValue = conversions.liquid[targetUnit]; // e.g., 48 for 'cup'
+                const currentUnitBaseValue = conversions.liquid[unit]; // e.g., 1 for 'teaspoon'
 
-                const convertedValue = workingValue / conversions.liquid[targetUnit];
+                // Skip if current unit cannot be converted to target unit
+                if (!targetUnitBaseValue || !currentUnitBaseValue) continue;
 
-                // Check if conversion results in a "nice" number (whole or common fraction)
-                const formattedConverted = formatToFraction(convertedValue);
+                // Value of the ingredient in the target unit
+                const convertedValue = (num * currentUnitBaseValue) / targetUnitBaseValue;
 
-                // Prioritize whole numbers, then common fractions
-                if (convertedValue % 1 === 0) { // Check for a clean whole number conversion
-                    return { quantity: convertedValue.toString(), unit: preferredUnits[targetUnit] || targetUnit };
-                } else if (formattedConverted.includes('/') || formattedConverted.includes(' ')) {
-                    // This is subjective. We prefer simpler fractions (smaller denominator)
-                    // For now, if it creates a fraction, it's considered.
-                    // You might want to fine-tune this to, e.g., only accept 1/2, 1/4, 1/3, 2/3, 3/4
-                    // or a maximum denominator like 8 or 16.
-                    return { quantity: formattedConverted, unit: preferredUnits[targetUnit] || targetUnit };
+                // Calculate simplicity score for this conversion
+                const currentSimplicity = calculateFractionSimplicity(convertedValue, targetUnit, targetUnitBaseValue, niceDenominators);
+
+                // If this conversion results in a "nicer" measurement, update bestResult
+                if (currentSimplicity < bestResult.simplicityScore) {
+                    bestResult = {
+                        quantity: formatToFraction(convertedValue, false), // Use exact fraction for comparison, then simplify
+                        unit: preferredUnits[targetUnit] || targetUnit,
+                        simplicityScore: currentSimplicity
+                    };
                 }
             }
 
-            // If no "nicer" unit found, format in the original unit (or converted to tsp if it was liquid)
-            // This fallback means it will try to keep it in the original unit if no better conversion was found
-            // but if it was a liquid, it will convert to tsp if that's the best option.
-            if (isLiquidVolumeUnit(unit)) {
-                return { quantity: formatToFraction(num), unit: preferredUnits[unit] || unit };
-            } else {
-                 return { quantity: formatToFraction(num), unit: preferredUnits[unit] || unit };
-            }
+            // Final formatting, applying rounding for display
+            return {
+                quantity: formatToFraction(parseFloat(bestResult.quantity.replace(' ', '+')), true), // Convert to float, then simplify
+                unit: bestResult.unit
+            };
         }
 
-        // Existing formatToFraction function (unchanged)
-        function formatToFraction(num) {
+        // Helper function to calculate a "simplicity score" for a quantity
+        // Lower score means simpler/nicer
+        function calculateFractionSimplicity(value, unit, unitBaseValue, niceDenominators) {
+            if (value === 0) return 0;
+            if (value % 1 === 0) return 1; // Whole numbers are simplest
+
+            const whole = Math.floor(value);
+            const fraction = value - whole;
+
+            let bestScore = Infinity;
+
+            for (let d of niceDenominators) {
+                const n = Math.round(fraction * d);
+                // If it's very close to a nice fraction
+                if (Math.abs(fraction - n / d) < 0.05) { // Tolerance for rounding to a nice fraction
+                    const currentScore = d; // Use denominator as score, smaller is better
+                    if (currentScore < bestScore) {
+                        bestScore = currentScore;
+                    }
+                }
+            }
+
+            // If no nice fraction found within tolerance, give a high score
+            if (bestScore === Infinity) {
+                return 1000; // Arbitrary high score for complex fractions
+            }
+
+            // Add a penalty for changing units if the current unit is already "nice"
+            // This prevents converting a perfect 1/2 cup to 8 tablespoons if 1/2 cup is preferred.
+            if (unitBaseValue && niceDenominators.includes(unitBaseValue)) { // If current unit is already a simple base (e.g., cup, tbsp)
+                 bestScore -= 0.5; // Slight bonus for staying in current unit if it's already "nice"
+            }
+
+            return bestScore;
+        }
+
+
+        // Modified formatToFraction function to allow aggressive rounding for display
+        // `aggressiveRounding` parameter: if true, will round to closest "nice" fraction.
+        function formatToFraction(num, aggressiveRounding = false) {
             if (num === 0) return '0';
 
-            const tolerance = 0.00001;
+            const tolerance = 0.00001; // For exact floating point comparisons
             const whole = Math.floor(num);
             let fraction = num - whole;
 
-            const denominators = [2, 3, 4, 5, 6, 8, 16]; // Common denominators to check
-            let bestFraction = '';
+            // Define common culinary denominators for "nice" fractions
+            const commonDenominators = [2, 3, 4, 8, 16]; // Prioritize these
+
+            let bestFractionText = '';
             let bestNumerator = 0;
             let bestDenominator = 1;
+            let minDiff = Infinity; // To find the closest fraction
 
-            for (let i = 0; i < denominators.length; i++) {
-                const d = denominators[i];
-                const n = Math.round(fraction * d);
-                if (Math.abs(fraction - n / d) < tolerance) {
-                    let currentN = n;
-                    let currentD = d;
-                    for (let j = Math.min(currentN, currentD); j > 1; j--) {
-                        if (currentN % j === 0 && currentD % j === 0) {
-                            currentN /= j;
-                            currentD /= j;
-                        }
+            if (fraction > tolerance) { // Only calculate fraction if there's a fractional part
+                for (let d of commonDenominators) {
+                    const n = Math.round(fraction * d);
+                    const currentDiff = Math.abs(fraction - n / d);
+
+                    if (currentDiff < minDiff) {
+                        minDiff = currentDiff;
+                        bestNumerator = n;
+                        bestDenominator = d;
                     }
+                }
 
-                    if (bestFraction === '' || currentD < bestDenominator) {
-                        bestNumerator = currentN;
-                        bestDenominator = currentD;
-                        bestFraction = `${bestNumerator}/${bestDenominator}`;
+                // If aggressive rounding is on, and we're within a reasonable tolerance
+                // (e.g., within 1/32nd of a whole or 0.03 for 1/3), use the "nicer" fraction.
+                // Or if we found a perfect match.
+                if (aggressiveRounding && minDiff < 0.03) { // Adjust this tolerance (e.g., 0.02 for tighter rounding)
+                    let gcdVal = gcd(bestNumerator, bestDenominator);
+                    bestNumerator /= gcdVal;
+                    bestDenominator /= gcdVal;
+                    bestFractionText = `${bestNumerator}/${bestDenominator}`;
+                } else if (minDiff < tolerance) { // Exact match (original behavior)
+                    let gcdVal = gcd(bestNumerator, bestDenominator);
+                    bestNumerator /= gcdVal;
+                    bestDenominator /= gcdVal;
+                    bestFractionText = `${bestNumerator}/${bestDenominator}`;
+                } else {
+                    // Fallback if not aggressively rounding or not close enough to a common fraction
+                    // This will result in weird fractions like 7/16 if not caught by aggressive rounding
+                    // You might adjust the denominators array or tolerance here.
+                    const d = 16; // Default to 16ths if no common fraction is close enough
+                    const n = Math.round(fraction * d);
+                    let gcdVal = gcd(n, d);
+                    bestNumerator = n / gcdVal;
+                    bestDenominator = d / gcdVal;
+                    if (bestNumerator !== 0 && bestDenominator !== 0) { // Avoid 0/X
+                        bestFractionText = `${bestNumerator}/${bestDenominator}`;
+                    } else {
+                        bestFractionText = ''; // No meaningful fraction
                     }
                 }
             }
 
-            if (bestFraction && bestNumerator !== 0) {
-                if (whole > 0) {
-                    return `${whole} ${bestFraction}`;
-                } else {
-                    return bestFraction;
-                }
+
+            if (whole > 0 && bestFractionText && bestNumerator !== 0) {
+                return `${whole} ${bestFractionText}`;
+            } else if (bestFractionText && bestNumerator !== 0) {
+                return bestFractionText;
             } else if (whole > 0) {
                 return whole.toString();
             } else {
-                return num.toFixed(2).replace(/\.00$/, '');
+                // If no whole part, no meaningful fraction, return '0' or a small decimal
+                // For very small numbers that don't fit fractions, you might just want '0' or 'a dash'
+                return '0'; // If it's less than a measurable fraction, just call it 0
             }
+        }
+
+        // Helper function to calculate Greatest Common Divisor (GCD) for reducing fractions
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
         }
 
         // Event Listeners for buttons and input (unchanged)
