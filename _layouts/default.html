@@ -41,7 +41,6 @@
     <main id="content" class="main-content" role="main">
        <div class="recipe-container">
             <h1>{{ page.title }}</h1>
-
             {% if page.original_servings %}
             <div class="servings-control">
                 <label for="servings-input">Servings:</label>
@@ -50,9 +49,9 @@
                 <button id="increase-servings">+</button>
             </div>
             {% endif %}
-            {{ content }} </div>
-      {{ content }}
-      
+            {{ content }} 
+      </div>
+
       <footer class="site-footer">
         {% if site.github.is_project_page %}
           <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
