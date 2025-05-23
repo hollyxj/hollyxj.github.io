@@ -3,6 +3,7 @@ layout: default
 title: Recipes
 ---
 
-# Our Delicious Recipes
+# Delicious Recipes
 
-A place for me to keep some recipes!
+A place for me to keep some recipes! 
+
