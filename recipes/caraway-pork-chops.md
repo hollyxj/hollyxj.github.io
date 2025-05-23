@@ -49,10 +49,10 @@ A comforting, flavorful pork chop recipe from Grandma, featuring the distinctive
 ## Instructions
 
 1.  Trim excess fat from the <span class="inst-quantity" data-ingredient-id="pork_chops">6</span> pork chops.
-2.  Sprinkle each chop generously with <span class="inst-quantity" data-ingredient-id="paprika"></span>paprika and <span class="inst-quantity" data-ingredient-id="salt">0.5 teaspoon</span> salt on both sides. Rub it around with your hands to distribute.
+2.  Sprinkle each chop generously with <span class="inst-quantity" data-ingredient-id="paprika"></span> paprika and <span class="inst-quantity" data-ingredient-id="salt"></span> salt on both sides. Rub it around with your hands to distribute.
 3.  Brown the chops in a hot skillet on both sides until nicely seared.
 4.  Remove the browned chops to an oven-safe dish.
-5.  Pour <span class="inst-quantity" data-ingredient-id="water">0.25 cup</span> water into the same skillet and stir around to scrape up any browned bits from the bottom (this adds flavor).
-6.  Add <span class="inst-quantity" data-ingredient-id="caraway_seed">1 teaspoon</span> caraway seeds to the skillet with the water, stir, and then pour this mixture on top of the chops in the oven dish.
+5.  Pour <span class="inst-quantity" data-ingredient-id="water">0.25</span> cup water into the same skillet and stir around to scrape up any browned bits from the bottom (this adds flavor).
+6.  Add <span class="inst-quantity" data-ingredient-id="caraway_seed">1</span> teaspoon caraway seeds to the skillet with the water, stir, and then pour this mixture on top of the chops in the oven dish.
 7.  Cover the dish and bake in a slow oven at 325°F (160°C) for about an hour, or until the chops are fork-tender.
 8.  Serve warm, usually with noodles.
