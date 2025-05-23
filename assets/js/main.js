@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Update ingredient list quantities
             ingredientItems.forEach(li => {
-                const originalQuantity = parseFloat(li.dataset.original-quantity); // Typo here, should be 'originalQuantity'
+                const originalQuantity = parseFloat(li.dataset.originalQuantity);
                 const originalUnit = li.dataset.originalUnit ? li.dataset.originalUnit.toLowerCase() : '';
                 const quantitySpan = li.querySelector('.ingredient-quantity');
                 const unitSpan = li.querySelector('.ingredient-unit');
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const matchingIngredientData = document.querySelector(`li[data-ingredient-id="${ingredientId}"]`);
 
                 if (matchingIngredientData) {
-                    const originalQuantity = parseFloat(matchingIngredientData.dataset.original-quantity); // Typo here, should be 'originalQuantity'
+                    const originalQuantity = parseFloat(matchingIngredientData.dataset.originalQuantity);
                     const originalUnit = matchingIngredientData.dataset.originalUnit ? matchingIngredientData.dataset.originalUnit.toLowerCase() : '';
 
                     if (!isNaN(originalQuantity)) {
