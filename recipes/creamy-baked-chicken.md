@@ -37,12 +37,21 @@ A delightfully simple and comforting chicken dish from Grandma, baked until tend
 
 ## Ingredients
 
-* <span class="ingredient-quantity" data-original-quantity="4" data-original-unit="pieces" data-ingredient-id="chicken_breast">4</span> <span class="ingredient-unit"></span>chicken breasts, skinned, boned, and split
-* <span class="ingredient-quantity" data-original-quantity="8" data-original-unit="slices" data-ingredient-id="swiss_cheese">8</span> <span class="ingredient-unit"></span>Swiss cheese (4x4 slices)
-* <span class="ingredient-quantity" data-original-quantity="10.75" data-original-unit="oz" data-ingredient-id="cream_of_chicken_soup">10.75</span> <span class="ingredient-unit"></span>can cream of chicken soup, undiluted
-* <span class="ingredient-quantity" data-original-quantity="0.25" data-original-unit="cup" data-ingredient-id="white_wine">0.25</span> <span class="ingredient-unit"></span>white wine
-* <span class="ingredient-quantity" data-original-quantity="1" data-original-unit="cup" data-ingredient-id="stuffing_mix">1</span> <span class="ingredient-unit"></span>herb seasoned stuffing mix, crushed
-* <span class="ingredient-quantity" data-original-quantity="0.25" data-original-unit="cup" data-ingredient-id="oleo">0.25</span> <span class="ingredient-unit"></span>oleo (margarine), melted
+<ul class="ingredient-list">
+  {% for ingredient in page.ingredients_data %}
+  <li data-ingredient-id="{{ ingredient.id }}" data-original-quantity="{{ ingredient.quantity }}" data-original-unit="{{ ingredient.unit }}">
+    <input type="checkbox" id="ingredient-{{ ingredient.id }}" name="ingredient-{{ ingredient.id }}"> {# More robust ID #}
+    <label for="ingredient-{{ ingredient.id }}"> {# More robust ID #}
+      <span class="ingredient-quantity">
+        {# The quantity will be filled by JS, but show original for no-JS #}
+        {% if ingredient.quantity %}{{ ingredient.quantity | replace: '.0', '' }}{% endif %}
+      </span>
+      {% if ingredient.unit %}{{ ingredient.unit }} {% endif %}
+      <span class="ingredient-item">{{ ingredient.item }}</span>
+    </label>
+  </li>
+  {% endfor %}
+</ul>
 
 ## Instructions
 
