@@ -54,4 +54,4 @@ ingredients_data:
 
 
 
-[Back to Recipes Index](/recipes/)
+[Back to All Recipes](/recipes/)
