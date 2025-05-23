@@ -51,14 +51,15 @@ ingredients_data: # Define ingredient data
       <span class="ingredient-quantity">
         {% if ingredient.quantity %}{{ ingredient.quantity }}{% endif %}
       </span>
-      <span class="ingredient-unit">{% if ingredient.unit %}{{ ingredient.unit }} {% endif %}</span> <span class="ingredient-item">{{ ingredient.item }}</span>
+      <span class="ingredient-unit">{% if ingredient.unit %}{{ ingredient.unit }} {% endif %}</span>
+      <span class="ingredient-item">{{ ingredient.item }}</span>
     </label>
   </li>
   {% endfor %}
 </ul>
 
 ## Instructions
-test 4
+test 5
 1. Whisk <span class="inst-quantity" data-ingredient-id="egg" data-original-unit="">1</span> egg,
    <span class="inst-quantity" data-ingredient-id="vanilla" data-original-unit="teaspoon">1</span> tsp vanilla and
    <span class="inst-quantity" data-ingredient-id="cinnamon" data-original-unit="teaspoon">0.5</span> tsp cinnamon in shallow dish.
