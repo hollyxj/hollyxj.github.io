@@ -13,11 +13,11 @@ ingredients_data:
     quantity: 8
     unit: oz
     item: Catalina French dressing
-  - id: onionsoupmix # <-- Fixed indentation and likely problematic character
+  - id: onionsoupmix 
     quantity: 8
     unit: oz
     item: Lipton onion soup mix
-  - id: peachpreserves # <-- Fixed indentation and likely problematic character
+  - id: peachpreserves
     quantity: 10
     unit: oz
     item: peach preserves
@@ -48,7 +48,7 @@ ingredients_data:
 1. Remove skin from chicken. Place in shallow roasting pan.
 2. Combine 
    <span class="inst-quantity" data-ingredient-id="dressing">8</span> oz Catalina French dressing, 
-   <span class="inst-quantity" data-ingredient-id="onionsoupmix">1</span> package Lipton onion soup mix, and
+   <span class="inst-quantity" data-ingredient-id="onionsoupmix">8</span> oz Lipton onion soup mix, and
    <span class="inst-quantity" data-ingredient-id="peachpreserves">10</span> oz peach preserves. Pour over chicken.
 3. Bake at 350°F (175°C) for 50 minutes.
 
