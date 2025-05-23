@@ -11,6 +11,7 @@ A place for me to keep some recipes! Click on a recipe below to view the full de
 
 * [Classic French Toast](/recipes/classic-french-toast)
 * [Catalina Chicken](/recipes/catalina-chicken)
+* [Catalina Chicken](/recipes/creamy-baked-chicken)
 
 
 *Adding more of my favorite recipes soon!*
