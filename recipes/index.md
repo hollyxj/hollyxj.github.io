@@ -9,7 +9,7 @@ A place for me to keep some recipes! Click on a recipe below to view the full de
 
 ## Recipe Index
 
-* [Classic French Toast](/recipes/classic-french-toast/)
+* [Classic French Toast](/recipes/classic-french-toast.md/)
 
 
 *Adding more of my favorite recipes soon!*
