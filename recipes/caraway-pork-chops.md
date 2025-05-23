@@ -27,20 +27,17 @@ ingredients_data:
     item: caraway seeds
 ---
 
-# Grandma's Caraway Pork Chops
-
 A comforting, flavorful pork chop recipe from Grandma, featuring the distinctive taste of caraway seeds. Usually served with noodles.
 
 ## Ingredients
 
 <ul class="ingredient-list">
   {% for ingredient in page.ingredients_data %}
-  <li data-ingredient-id="{{ ingredient.id }}" data-original-quantity="{{ ingredient.quantity }}" data-original-unit="{{ ingredient.unit }}">
-    <input type="checkbox" id="ingredient-{{ ingredient.id }}" name="ingredient-{{ ingredient.id }}"> {# More robust ID #}
-    <label for="ingredient-{{ ingredient.id }}"> {# More robust ID #}
+  <li data-ingredient-id="{{ ingredient.id }}" data-original-quantity="{{ ingredient.quantity }}">
+    <input type="checkbox" id="ingredient{{ forloop.index }}" name="ingredient{{ forloop.index }}">
+    <label for="ingredient{{ forloop.index }}">
       <span class="ingredient-quantity">
-        {# The quantity will be filled by JS, but show original for no-JS #}
-        {% if ingredient.quantity %}{{ ingredient.quantity | replace: '.0', '' }}{% endif %}
+        {% if ingredient.quantity %}{{ ingredient.quantity }}{% endif %}
       </span>
       {% if ingredient.unit %}{{ ingredient.unit }} {% endif %}
       <span class="ingredient-item">{{ ingredient.item }}</span>
