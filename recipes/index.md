@@ -10,8 +10,8 @@ A place for me to keep some recipes! Click on a recipe below to view the full de
 ## Recipe Index
 
 * [Classic French Toast](/recipes/classic-french-toast)
-* [Catalina Chicken](/recipes/catalina-chicken)
-* [Creamy Baked Chicken](/recipes/creamy-baked-chicken)
+* [Grandma's Catalina Chicken](/recipes/catalina-chicken)
+* [Grandma's Creamy Baked Chicken](/recipes/creamy-baked-chicken)
 * [Grandma's Caraway Pork Chops](/recipes/caraway-pork-chops)
 
 
