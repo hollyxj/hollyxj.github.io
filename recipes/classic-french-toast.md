@@ -59,22 +59,10 @@ ingredients_data: # Define ingredient data
 </ul>
 
 ## Instructions
-1. Whisk {% assign egg_data = page.ingredients_data | where:"id","egg" | first %}
-   {% if egg_data %}{{ egg_data.quantity }}{% endif %}
-   {% if egg_data.unit %}{{ egg_data.unit }} {% endif %}
-   {{ egg_data.item | downcase }},
-   {% assign vanilla_data = page.ingredients_data | where:"id","vanilla" | first %}
-   {% if vanilla_data %}{{ vanilla_data.quantity }}{% endif %}
-   {% if vanilla_data.unit %} {{ vanilla_data.unit }} {% endif %}
-   {{ vanilla_data.item | downcase }} and
-   {% assign cinnamon_data = page.ingredients_data | where:"id","cinnamon" | first %}
-   {% if cinnamon_data %}{{ cinnamon_data.quantity }}{% endif %}
-   {% if cinnamon_data.unit %} {{ cinnamon_data.unit }} {% endif %}
-   {{ cinnamon_data.item | downcase }} in shallow dish.
-   Stir in {% assign milk_data = page.ingredients_data | where:"id","milk" | first %}
-   {% if milk_data %}{{ milk_data.quantity }}{% endif %}
-   {% if milk_data.unit %} {{ milk_data.unit }} {% endif %}
-   {{ milk_data.item | downcase }}.
+1. Whisk <span id="inst-egg-qty" data-ingredient-id="egg">1</span> egg,
+   <span id="inst-vanilla-qty" data-ingredient-id="vanilla">1</span> tsp vanilla and
+   <span id="inst-cinnamon-qty" data-ingredient-id="cinnamon">1/2</span> tsp cinnamon in shallow dish.
+   Stir in <span id="inst-milk-qty" data-ingredient-id="milk">1/4</span> c milk.
 
 2. Dip {% assign bread_data = page.ingredients_data | where:"id","bread" | first %}
    {% if bread_data %}{{ bread_data.quantity }}{% endif %}
