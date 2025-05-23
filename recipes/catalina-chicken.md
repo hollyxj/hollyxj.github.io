@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Catalina Chicken
+title: Catalina Chicken 
 categories:
   - dinner
 original_servings: 6
