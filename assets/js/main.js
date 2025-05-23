@@ -337,19 +337,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Event listener for the "Default" button
-        if (resetButton) { // Ensure the reset button exists on the page
-            // *** DEBUGGING: Confirm reset button found ***
+        if (resetButton) {
             console.log('Reset button found, adding event listener.');
-            // *** END DEBUGGING ***
             resetButton.addEventListener('click', (event) => {
                 event.preventDefault(); // Prevent the link from navigating or jumping
+                
+                console.log('Original Servings value:', originalServings); 
+
                 currentServings = originalServings; // Reset currentServings to the original
                 servingsInput.value = currentServings; // Update the input field
                 updateQuantities(); // Recalculate and display ingredient quantities
-                // *** DEBUGGING: Confirm click registered and value reset ***
                 console.log('Default button clicked, servings reset to:', currentServings);
-                // *** END DEBUGGING ***
             });
+        }
         }
         
         // Initialize quantities on page load
