@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // --- Checkbox Logic (unchanged) ---
+    // --- Checkbox Logic (unchanged) --- ---
     const ingredientLists = document.querySelectorAll('.ingredient-list');
 
     ingredientLists.forEach(list => {
