@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     {% include head-custom.html %}
   </head>
-  <body>
+  
+   <body {% if page.original_servings %}data-original-servings="{{ page.original_servings }}"{% endif %}>
+    <script src="{{ "/assets/js/main.js" | relative_url }}"></script>
     <a id="skip-to-content" href="#content">Skip to the content.</a>
 
     <header class="page-header" role="banner">
