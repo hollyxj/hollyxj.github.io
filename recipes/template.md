@@ -10,14 +10,36 @@ ingredients_data:
     quantity: 1
     unit: teaspoon
     item: INSERT
-  - id: egg
-    quantity: 1
-    unit: "" # No unit needed for egg
-    item: egg
-
+  - id: 
+    quantity: 
+    unit: 
+    item: 
+  - id: 
+    quantity: 
+    unit: 
+    item:
+  - id: 
+    quantity: 
+    unit: 
+    item:
+  - id: 
+    quantity: 
+    unit: 
+    item:
+  - id: 
+    quantity: 
+    unit: 
+    item:
+  - id: 
+    quantity: 
+    unit: 
+    item:
 ---
+<span class="inst-quantity" data-ingredient-id="insert">1</span> 
+<span class="inst-quantity" data-ingredient-id="insert">1</span> 
+<span class="inst-quantity" data-ingredient-id="insert">1</span> 
 
-# INSERT RECIPE NAME
+# RECIPE NAME
 
 <p>
   Source: <a href="INSERTLINK" target="_blank" rel="noopener noreferrer">INSERT</a>
@@ -49,9 +71,8 @@ ingredients_data:
 
 ## Instructions
 1.  
-   <span class="inst-quantity" data-ingredient-id="vanilla">1</span> tsp vanilla and
-   <span class="inst-quantity" data-ingredient-id="cinnamon">0.5</span> tsp cinnamon in shallow dish.
 
+Bake at 350°F (175°C) for 50 minutes.
 
 
 [Back to All Recipes](/recipes/)
