@@ -20,7 +20,7 @@ header nav ul li a {
     display: block; /* Make the whole link clickable */
     padding: 8px 15px;
     text-decoration: none; /* Remove underline */
-    color: #333; /* Dark gray text */
+    color: white;
     background-color: #eee; /* Light gray background */
     border-radius: 5px; /* Slightly rounded corners */
     transition: background-color 0.3s ease; /* Smooth hover effect */
@@ -28,9 +28,4 @@ header nav ul li a {
 
 header nav ul li a:hover {
     background-color: #ddd; /* Darker gray on hover */
-}
-
-/* To override the default link color of the theme since it is interfering */
-#main_content a {
-    color: #0366d6; /* Default blue for links in content, adjust as needed */
 }
