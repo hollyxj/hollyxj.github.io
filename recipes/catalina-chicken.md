@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Catalina Chicken
+title: Grandma's Catalina Chicken
 categories:
   - dinner
 original_servings: 6
@@ -23,18 +23,9 @@ ingredients_data:
     item: peach preserves
 ---
 
-# Catalina Chicken
-
 <p>
-  Source: Family
+  Source: Grandma
 </p>
-
-<div class="servings-spinner-container">
-    <label for="servings-input">Servings:</label>
-    <button id="decrease-servings">-</button>
-    <input type="number" id="servings-input" value="6" min="1" max="99">
-    <button id="increase-servings">+</button>
-</div>
 
 ## Ingredients
 
