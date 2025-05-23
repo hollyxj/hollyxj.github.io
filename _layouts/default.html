@@ -52,6 +52,24 @@
             </div>
             {% endif %}
             {{ content }} 
+             {% if page.ingredients_data %} {# Check if ingredients_data exists #}
+            <h2>Ingredients</h2>
+            <ul class="ingredient-list">
+              {% for ingredient in page.ingredients_data %}
+              <li data-ingredient-id="{{ ingredient.id }}" data-original-quantity="{{ ingredient.quantity }}" data-original-unit="{{ ingredient.unit }}">
+                <input type="checkbox" id="ingredient-{{ ingredient.id }}" name="ingredient-{{ ingredient.id }}">
+                <label for="ingredient-{{ ingredient.id }}">
+                  <span class="ingredient-quantity">
+                    {# The quantity will be filled by JS, but show original for no-JS #}
+                    {% if ingredient.quantity %}{{ ingredient.quantity | replace: '.0', '' }}{% endif %}
+                  </span>
+                  {% if ingredient.unit %}{{ ingredient.unit }} {% endif %}
+                  <span class="ingredient-item">{{ ingredient.item }}</span>
+                </label>
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
       </div>
 
       <footer class="site-footer">
