@@ -23,10 +23,6 @@ ingredients_data:
     item: peach preserves
 ---
 
-<p>
-  Source: Grandma
-</p>
-
 ## Ingredients
 
 <ul class="ingredient-list">
