@@ -4,9 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     ingredientLists.forEach(list => {
         const checkboxes = list.querySelectorAll('input[type="checkbox"]');
-        const pageId = window.location.pathname; // Unique ID for the current page
+        const pageId = window.location.pathname;
 
-        // Load saved state
         checkboxes.forEach(checkbox => {
             const storageKey = `${pageId}-${checkbox.id}`;
             if (localStorage.getItem(storageKey) === 'checked') {
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Save state on change
         list.addEventListener('change', function(event) {
             if (event.target.type === 'checkbox') {
                 const checkbox = event.target;
@@ -37,19 +35,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const decreaseButton = document.getElementById('decrease-servings');
     const increaseButton = document.getElementById('increase-servings');
     const ingredientListElement = document.querySelector('.ingredient-list');
-
-    // NEW: Get the instruction quantity spans
     const instructionQuantitySpans = document.querySelectorAll('.inst-quantity');
 
     // ONLY proceed if all essential elements are found on the page
     if (servingsInput && decreaseButton && increaseButton && ingredientListElement) {
-        // We'll get the original_servings from the data attribute on the body or a hidden element
-        // or directly from the initial value of servingsInput if it's set by Jekyll
-        // For now, we'll rely on the initial servingsInput.value to be the original_servings
-        const originalServings = parseFloat(document.querySelector('[data-original-servings]').dataset.originalServings); // Get this from a new data attribute
-        let currentServings = originalServings; // Start with the value in the input box
 
-        const ingredientItems = Array.from(ingredientListElement.querySelectorAll('li[data-original-quantity]')); // Select only LIs with data-original-quantity
+        const originalServings = parseFloat(document.querySelector('body').dataset.originalServings);
+        let currentServings = originalServings;
+
+        const ingredientItems = Array.from(ingredientListElement.querySelectorAll('li[data-original-quantity]'));
+
+        // Define conversion rates (all in terms of teaspoons as base)
+        const conversions = {
+            'teaspoon': 1,
+            'tsp': 1,
+            'tablespoon': 3, // 3 teaspoons in 1 tablespoon
+            'tbsp': 3,
+            'fluid ounce': 6, // 2 tbsp = 1 fl oz, so 6 tsp = 1 fl oz
+            'fl oz': 6,
+            'cup': 48, // 16 tbsp = 1 cup, so 48 tsp = 1 cup
+            'c': 48,
+            'pint': 96, // 2 cups = 1 pint, so 96 tsp = 1 pint
+            'pt': 96,
+            'quart': 192, // 2 pints = 1 quart, so 192 tsp = 1 quart
+            'qt': 192,
+            'gallon': 768, // 4 quarts = 1 gallon, so 768 tsp = 1 gallon
+            'gal': 768
+            // Add more as needed, e.g., 'pound', 'oz' for weight if you include that
+        };
+
+        // Define preferred units and their abbreviations for display
+        const preferredUnits = {
+            'tsp': 'teaspoon',
+            'tbsp': 'tablespoon',
+            'fl oz': 'fluid ounce',
+            'c': 'cup',
+            'pt': 'pint',
+            'qt': 'quart',
+            'gal': 'gallon',
+            'slices': 'slices', // Non-convertible unit, keep as is
+            'egg': 'egg',     // Non-convertible unit, keep as is
+            '': ''           // For cases with no unit
+        };
 
         // Function to update quantities for both ingredient list and instructions
         function updateQuantities() {
@@ -57,47 +84,89 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Update ingredient list quantities
             ingredientItems.forEach(li => {
-                const originalQuantity = parseFloat(li.dataset.originalQuantity); // Ensure it's parsed as a number
+                const originalQuantity = parseFloat(li.dataset.originalQuantity);
+                const originalUnit = li.dataset.originalUnit ? li.dataset.originalUnit.toLowerCase() : ''; // Get original unit
                 const quantitySpan = li.querySelector('.ingredient-quantity');
+                const unitSpan = li.querySelector('.ingredient-unit'); // Get the unit span
 
                 if (!isNaN(originalQuantity) && quantitySpan) {
                     const newQuantity = originalQuantity * scalingFactor;
-                    quantitySpan.textContent = formatQuantity(newQuantity);
+                    const formatted = formatQuantityWithConversion(newQuantity, originalUnit);
+                    quantitySpan.textContent = formatted.quantity;
+                    if (unitSpan) {
+                        unitSpan.textContent = formatted.unit ? `${formatted.unit} ` : ''; // Add space if unit exists
+                    }
                 }
             });
 
             // Update instruction quantities
             instructionQuantitySpans.forEach(span => {
                 const ingredientId = span.dataset.ingredientId;
-                const matchingIngredientData = document.querySelector(`[data-ingredient-id="${ingredientId}"]`); // Find the corresponding li for original quantity
+                const originalUnit = span.dataset.originalUnit ? span.dataset.originalUnit.toLowerCase() : ''; // Get original unit
+                const matchingIngredientData = document.querySelector(`li[data-ingredient-id="${ingredientId}"]`);
 
                 if (matchingIngredientData) {
                     const originalQuantity = parseFloat(matchingIngredientData.dataset.originalQuantity);
                     if (!isNaN(originalQuantity)) {
                         const newQuantity = originalQuantity * scalingFactor;
-                        span.textContent = formatQuantity(newQuantity);
+                        const formatted = formatQuantityWithConversion(newQuantity, originalUnit);
+                        // For instructions, we often keep the original unit unless the conversion is significant
+                        // For simplicity, we'll just update the number here.
+                        // If you want unit changes in instructions, you'd need to modify the instruction text more.
+                        span.textContent = formatted.quantity;
                     }
                 }
             });
         }
 
-        // Function to format quantities (e.g., 0.5 to 1/2, 2.25 to 2 1/4)
-        function formatQuantity(num) {
-            if (num === 0) return '0'; // Handle zero specifically
+        // New function to format quantity with unit conversion logic
+        function formatQuantityWithConversion(num, unit) {
+            if (num === 0) return { quantity: '0', unit: unit };
 
-            const tolerance = 0.00001; // For floating point comparison issues
+            let workingUnit = unit;
+            let workingValue = num;
 
-            // Special handling for common fractions
-            if (Math.abs(num - 0.25) < tolerance) return '1/4';
-            if (Math.abs(num - 0.5) < tolerance) return '1/2';
-            if (Math.abs(num - 0.75) < tolerance) return '3/4';
-            if (Math.abs(num - (1/3)) < tolerance) return '1/3';
-            if (Math.abs(num - (2/3)) < tolerance) return '2/3';
+            // Convert to base unit (teaspoons) if it's a known liquid measurement
+            if (conversions[unit]) {
+                workingValue = num * conversions[unit]; // Convert quantity to teaspoons
+                workingUnit = 'teaspoon'; // Set working unit to base
+            }
 
+            // Attempt to convert to a larger, "nicer" unit if it results in a whole number or common fraction
+            for (const targetUnit in conversions) {
+                // Skip units that are not larger or not relevant for the current type
+                if (conversions[targetUnit] <= conversions[workingUnit] || !preferredUnits[targetUnit]) continue;
+
+                const convertedValue = workingValue / conversions[targetUnit];
+
+                // Check if conversion results in a "nice" number (whole or common fraction)
+                const formattedConverted = formatToFraction(convertedValue);
+                if (formattedConverted.includes('/') || formattedConverted.includes(' ')) { // Contains a fraction
+                    // Check if the resulting fraction is simpler or more intuitive
+                    // This is subjective; we're prioritizing common denominators
+                    // A simple check could be if the denominator is <= 16 or results in a whole number.
+                    if (convertedValue % 1 === 0 || formattedConverted.split('/')[1] <= 16 || formattedConverted.split(' ')[1]) {
+                         return { quantity: formattedConverted, unit: preferredUnits[targetUnit] };
+                    }
+                } else if (convertedValue % 1 === 0) { // Check for a clean whole number conversion
+                    return { quantity: convertedValue.toString(), unit: preferredUnits[targetUnit] };
+                }
+            }
+
+            // If no "nicer" unit found, format in the original unit (or the closest converted unit)
+            return { quantity: formatToFraction(num), unit: unit };
+        }
+
+
+        // Existing formatToFraction function (renamed for clarity from formatQuantity)
+        function formatToFraction(num) {
+            if (num === 0) return '0';
+
+            const tolerance = 0.00001;
             const whole = Math.floor(num);
-            const fraction = num - whole;
+            let fraction = num - whole;
 
-            // Try to represent fractions like X/2, X/3, X/4, X/5, X/6, X/8, X/16
+            // Try to represent fractions with common denominators (up to 16ths for precision)
             const denominators = [2, 3, 4, 5, 6, 8, 16]; // Common denominators to check
             let bestFraction = '';
             let bestNumerator = 0;
@@ -106,11 +175,10 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < denominators.length; i++) {
                 const d = denominators[i];
                 const n = Math.round(fraction * d);
-                // Check if this fraction is a good approximation and has a smaller or equal denominator
                 if (Math.abs(fraction - n / d) < tolerance) {
-                    // Reduce fraction if possible before comparing
                     let currentN = n;
                     let currentD = d;
+                    // Reduce fraction
                     for (let j = Math.min(currentN, currentD); j > 1; j--) {
                         if (currentN % j === 0 && currentD % j === 0) {
                             currentN /= j;
@@ -118,7 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }
 
-                    if (bestFraction === '' || currentD < bestDenominator) { // Prefer simpler fractions (smaller denominator)
+                    // Prioritize simpler fractions (smaller denominator)
+                    if (bestFraction === '' || currentD < bestDenominator) {
                         bestNumerator = currentN;
                         bestDenominator = currentD;
                         bestFraction = `${bestNumerator}/${bestDenominator}`;
@@ -135,14 +204,14 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (whole > 0) {
                 return whole.toString(); // If no fractional part, just return the whole number
             } else {
-                return num.toFixed(2).replace(/\.00$/, ''); // Fallback for other decimals, rounds to 2 decimal places
+                return num.toFixed(2).replace(/\.00$/, ''); // Fallback for other decimals
             }
         }
 
 
-        // Event Listeners for buttons and input
+        // Event Listeners for buttons and input (unchanged)
         decreaseButton.addEventListener('click', () => {
-            if (currentServings > 1) { // Lowest serving size is 1
+            if (currentServings > 1) {
                 currentServings--;
                 servingsInput.value = currentServings;
                 updateQuantities();
@@ -158,10 +227,10 @@ document.addEventListener('DOMContentLoaded', function() {
         servingsInput.addEventListener('change', () => {
             let inputValue = parseFloat(servingsInput.value);
             if (isNaN(inputValue) || inputValue < 1) {
-                inputValue = 1; // Default to 1 if invalid
+                inputValue = 1;
             }
             currentServings = inputValue;
-            servingsInput.value = currentServings; // Ensure input field reflects valid value
+            servingsInput.value = currentServings;
             updateQuantities();
         });
 
