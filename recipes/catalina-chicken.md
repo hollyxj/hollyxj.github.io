@@ -13,11 +13,11 @@ ingredients_data:
     quantity: 8
     unit: oz
     item: Catalina French dressing
- - id: onionsoupmix
+  - id: onionsoupmix
     quantity: 8
     unit: oz
     item: Lipton onion soup mix
- - id: peachpreserves
+  - id: peachpreserves
     quantity: 10
     unit: oz
     item: peach preserves
