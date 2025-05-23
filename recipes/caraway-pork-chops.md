@@ -33,11 +33,21 @@ A comforting, flavorful pork chop recipe from Grandma, featuring the distinctive
 
 ## Ingredients
 
-* <span class="ingredient-quantity" data-original-quantity="6" data-original-unit="pieces" data-ingredient-id="pork_chops">6</span> <span class="ingredient-unit"></span>pork chops (about 6 or so)
-* <span class="ingredient-quantity" data-original-quantity="0" data-original-unit="as needed" data-ingredient-id="paprika"></span> <span class="ingredient-unit"></span>paprika
-* <span class="ingredient-quantity" data-original-quantity="0.5" data-original-unit="teaspoon" data-ingredient-id="salt">0.5</span> <span class="ingredient-unit"></span>salt
-* <span class="ingredient-quantity" data-original-quantity="0.25" data-original-unit="cup" data-ingredient-id="water">0.25</span> <span class="ingredient-unit"></span>water (1/4 to 1/2 cup or less)
-* <span class="ingredient-quantity" data-original-quantity="1" data-original-unit="teaspoon" data-ingredient-id="caraway_seed">1</span> <span class="ingredient-unit"></span>caraway seeds
+<ul class="ingredient-list">
+  {% for ingredient in page.ingredients_data %}
+  <li data-ingredient-id="{{ ingredient.id }}" data-original-quantity="{{ ingredient.quantity }}" data-original-unit="{{ ingredient.unit }}">
+    <input type="checkbox" id="ingredient-{{ ingredient.id }}" name="ingredient-{{ ingredient.id }}"> {# More robust ID #}
+    <label for="ingredient-{{ ingredient.id }}"> {# More robust ID #}
+      <span class="ingredient-quantity">
+        {# The quantity will be filled by JS, but show original for no-JS #}
+        {% if ingredient.quantity %}{{ ingredient.quantity | replace: '.0', '' }}{% endif %}
+      </span>
+      {% if ingredient.unit %}{{ ingredient.unit }} {% endif %}
+      <span class="ingredient-item">{{ ingredient.item }}</span>
+    </label>
+  </li>
+  {% endfor %}
+</ul>
 
 ## Instructions
 
