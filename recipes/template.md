@@ -36,21 +36,11 @@ ingredients_data:
     item:
 ---
 <span class="inst-quantity" data-ingredient-id="insert">1</span> 
-<span class="inst-quantity" data-ingredient-id="insert">1</span> 
-<span class="inst-quantity" data-ingredient-id="insert">1</span> 
-
-# RECIPE NAME
 
 <p>
   Source: <a href="INSERTLINK" target="_blank" rel="noopener noreferrer">INSERT</a>
 </p>
 
-<div class="servings-spinner-container">
-    <label for="servings-input">Servings:</label>
-    <button id="decrease-servings">-</button>
-    <input type="number" id="servings-input" value="4" min="1" max="99">
-    <button id="increase-servings">+</button>
-</div>
 
 ## Ingredients
 
