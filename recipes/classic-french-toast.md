@@ -59,7 +59,7 @@ ingredients_data: # Define ingredient data
 </ul>
 
 ## Instructions
-Test 2
+
 1. Whisk <span class="inst-quantity" data-ingredient-id="egg">1</span> egg,
    <span class="inst-quantity" data-ingredient-id="vanilla">1</span> tsp vanilla and
    <span class="inst-quantity" data-ingredient-id="cinnamon">0.5</span> tsp cinnamon in shallow dish.
